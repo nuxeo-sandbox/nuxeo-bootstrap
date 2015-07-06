@@ -1,0 +1,9 @@
+---
+
+- hosts: nuxeo
+  sudo: yes
+  roles:
+#  - { role: ffmpeg }
+  - { role: apache-nuxeo }
+  - { role: nuxeo }
+#  - {role: nuxeomp, packages: [nuxeo-dam]}

@@ -1,0 +1,39 @@
+- name: Add multiverse repositorise
+  apt_repository: repo="{{item}}" update_cache=false
+  with_items:
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse'
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse'
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-security multiverse'
+  register: multiverse_installed
+  when: ansible_distribution == 'Ubuntu'
+- name: Refresh apt cache
+  apt: update_cache=true
+  when: multiverse_installed.changed
+- name: Install dependencies
+  apt: name={{itme}} state=present
+  with_items:
+  - git
+  - ffmpeg2theora
+  - ufraw
+- name: Check for system ffmpeg
+  stat: path=/usr/bin/ffmpeg
+  register: system_ffmpeg
+- name: Check for custom ffmpeg
+  stat: path=/usr/local/bin/ffmpeg
+  register: custom_ffmpeg
+- name: Check if we should compile ffmpeg
+  set_fact:
+    ffmpeg_exists: "{{system_ffmpeg.stat.exists or custom_ffmpeg.stat.exists}}"
+- name: Get ffmpeg compile scripts
+  git: repo=https://github.com/nuxeo/ffmpeg-nuxeo.git dest=/tmp/ffmpeg
+  when: not ffmpeg_exists|bool
+- name: Compile ffmpeg
+  shell: ./build-all.sh true
+  args:
+    chdir: /tmp/ffmpeg
+  environment:
+    BUILD=YASM: true
+  when: not ffmpeg_exists|bool
+- name: Cleanup ffmpeg build directory
+  file: path=/tmp/ffmpeg state=absent
+

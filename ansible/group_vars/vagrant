@@ -1,0 +1,5 @@
+---
+#nuxeo_version: "7.3"
+public_interface: 'ansible_eth1'
+dbhost: "{{ hostvars[groups['db'][0]][public_interface].ipv4.address }}"
+

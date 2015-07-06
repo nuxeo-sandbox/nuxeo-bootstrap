@@ -1,0 +1,49 @@
+---
+#nuxeo_distribution: url to a distribution zip - takes precedence over nuxeo_version
+nuxeo_version: 7.3
+nexus_url: "https://maven.nuxeo.org/nexus/service/local/artifact/maven/redirect?r=%s&g=org.nuxeo.ecm.distribution&a=nuxeo-distribution-tomcat&v=%s&e=zip&c=nuxeo-cap"
+update_snapshots: false
+compile_ffmpeg: true
+reset_data: false
+nuxeo_service_name: "nuxeo"
+nuxeo_user: "nuxeo"
+nuxeo_user_uid: "1005"
+nuxeo_base: "/opt/nuxeo"
+
+nuxeo_db_host: "{{hostvars[groups['db'][0]][public_interface].ipv4.address}}"
+nuxeo_db_port: 5432
+nuxeo_db_name: "nuxeo"
+nuxeo_db_user: "nuxeo"
+nuxeo_db_pass: "nuxeo"
+
+nuxeo_init_conf: False
+
+
+
+JAVA_OPTS: -Xms256M -Xmx1G
+
+nuxeo_conf: {
+  nuxeo.redis.enabled: "{{ ((groups['redis'] | length) > 0) | ternary('true', 'false') }}",
+  nuxeo.redis.host: "{{hostvars[groups['redis'][0]][public_interface]['ipv4']['address']}}",
+  nuxeo.redis.port: 6379,
+  nuxeo.redis.prefix: 'nuxeo:',
+  nuxeo.redis.database: 0,
+  nuxeo.redis.timeout: 2000,
+
+  nuxeo.vcs.max-pool-size: 20,
+
+  elasticsearch.addressList: "{{hostvars[groups['elastic'][0]][public_interface]['ipv4']['address']}}:9300",
+  elasticsearch.clusterName: nuxeoCluster,
+
+  elasticsearch.reindex.bucketReadSize: 2000,
+  elasticsearch.reindex.bucketWriteSize: 250,
+
+  elasticsearch.indexName: nuxeo,
+  elasticsearch.indexNumberOfReplicas: 0,
+  elasticsearch.adminCenter.displayClusterInfo: true,
+  elasticsearch.indexing.maxThreads: 12,
+  elasticsearch.indexing.clearCompletedAfterSeconds: 1
+  #elasticsearch.override.pageproviders: "default_search,document_content,section_content,document_content,tree_children,default_document_suggestion,simple_search,advanced_search,nxql_search,DEFAULT_DOCUMENT_SUGGESTION"
+}
+
+

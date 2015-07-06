@@ -1,0 +1,26 @@
+---
+- name: Check for snapshot
+  set_fact:
+    nuxeo_is_snapshot: "{{'-SNAPSHOT' in nuxeo_version or '-SNAPSHOT' in nuxeo_distribution|default('')}}"
+- name: Nuxeo user
+  user: name={{nuxeo_user}} home={{nuxeo_base}} createhome=yes shell=/bin/bash state=present uid={{nuxeo_user_uid}}
+- name: Nuxeo init.d script
+  template: src=nuxeo.init dest=/etc/init.d/{{nuxeo_service_name}} mode=0755
+- name: Enable init.d script
+  service: name={{nuxeo_service_name}} enabled=yes
+- name: Validate distribution variables
+  fail: msg="You must define nuxeo_version (even for local/custom distributions)"
+  when: nuxeo_version is not defined and (stage is not defined or stage == 'init')
+- name: Install dependencies
+  include: dependencies.yml
+- name: Get distribution
+  include: get_distribution.yml
+
+- name: Stop nuxeo
+  include: stop.yml
+
+- name: Update distribution
+  include: update_distribution.yml
+
+- name: Start nuxeo
+  include: start.yml

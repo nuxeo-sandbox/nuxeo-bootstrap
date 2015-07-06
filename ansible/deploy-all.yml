@@ -1,0 +1,8 @@
+---
+
+
+- include: common.yml
+- include: db.yml
+- include: redis.yml
+- include: elastic.yml
+- include: nuxeo.yml

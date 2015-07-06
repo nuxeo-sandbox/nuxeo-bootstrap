@@ -1,0 +1,20 @@
+machine1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22
+
+[myapp:children]
+db
+redis
+elastic
+nuxeo
+
+[elastic]
+machine1
+
+[redis]
+machine1
+
+[db]
+machine1
+
+[nuxeo]
+machine1
+

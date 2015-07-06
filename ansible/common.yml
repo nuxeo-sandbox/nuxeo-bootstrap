@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  sudo: yes
+  tasks:
+    - name: Install SSH key
+      authorized_key: user=root
+                      key="{{ lookup('file', item) }}"
+                      state=present
+      with_fileglob:
+        - public_keys/id_rsa*
+
+- hosts: all
+  sudo: yes
+  roles:
+  - common

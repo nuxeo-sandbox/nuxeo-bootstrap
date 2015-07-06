@@ -1,0 +1,7 @@
+---
+
+- hosts: elastic
+  sudo: yes
+  roles:
+  - {role: java, version: oracle-jdk8 }
+  - {role: elasticsearch}

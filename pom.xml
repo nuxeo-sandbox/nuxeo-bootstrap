@@ -5,30 +5,29 @@
   <parent>
     <groupId>org.nuxeo</groupId>
     <artifactId>nuxeo-addons-parent</artifactId>
-    <version>7.3</version>
+    <version>7.4-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.nuxeo.myapp</groupId>
+  <groupId>org.nuxeo.bootstrap</groupId>
   <artifactId>nuxeo-bootstrap-parent</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>My App :: Parent pom</name>
+  <name>Bootstrap :: Parent pom</name>
   <packaging>pom</packaging>
-
 
   <description />
 
   <properties>
+    <nuxeo.version>7.4-SNAPSHOT</nuxeo.version>
     <nuxeo.studio.myapp.version>0.0.0-SNAPSHOT</nuxeo.studio.myapp.version>
-    <nuxeo.version>7.3</nuxeo.version>
-    <mp.version>${project.version}</mp.version>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <modules>
-    <!--module>nuxeo-bootstrap-core</module>
-    <module>nuxeo-bootstrap-ui</module>
-    <module>nuxeo-bootstrap-marketplace</module-->
+    <module>bootstrap-core</module>
+    <module>bootstrap-web</module>
+    <module>bootstrap-marketplace</module>
   </modules>
 
   <dependencyManagement>
